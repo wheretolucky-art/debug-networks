@@ -49,6 +49,7 @@ jobs:
           api-level: 34
           target: google_apis
           arch: x86_64
+          ram-size: 4096M
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           script: bash dn-office/android/smoke-test.sh
