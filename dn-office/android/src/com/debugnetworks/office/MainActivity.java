@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowInsetsController;
 import android.webkit.JavascriptInterface;
+import android.webkit.RenderProcessGoneDetail;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -53,6 +54,11 @@ public class MainActivity extends Activity {
         if ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) {
             WebView.setWebContentsDebuggingEnabled(true); // test builds only, so the emulator check can drive the page
         }
+        makeWeb();
+    }
+
+    /** Creates the page view and opens the app in it. Also used to start again if the page's drawing process stops. */
+    void makeWeb() {
         web = new WebView(this);
         web.setBackgroundColor(CREAM);
         setContentView(web);
@@ -258,6 +264,21 @@ public class MainActivity extends Activity {
 
     /** Serves the app from assets and sends every other link to the right app (WhatsApp, dialer, UPI, browser). */
     class AppClient extends WebViewClient {
+        /**
+         * The page is drawn by a separate process that Android may stop when the phone is short of memory.
+         * Without this, Android closes the whole app. Instead, start a fresh page; records are saved, so nothing is lost.
+         */
+        @Override
+        public boolean onRenderProcessGone(WebView view, RenderProcessGoneDetail detail) {
+            android.util.Log.w("DNOffice", "page process stopped" + (detail != null && detail.didCrash() ? " (crash)" : " (memory)") + ", starting again");
+            if (view != web) return true;
+            if (fileCallback != null) { fileCallback.onReceiveValue(null); fileCallback = null; }
+            view.destroy();
+            web = null;
+            makeWeb();
+            return true;
+        }
+
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Uri uri = Uri.parse(url);

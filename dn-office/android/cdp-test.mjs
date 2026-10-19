@@ -34,27 +34,36 @@ for (let i = 0; i < 30 && !sock; i++) {
   if (m) sock = m[1]; else await sleep(1000);
 }
 if (!sock) { log('no WebView debug socket'); process.exit(0); }
-sh(`adb forward tcp:9222 localabstract:${sock}`);
-let target;
-for (let i = 0; i < 20 && !target; i++) {
-  try { const list = await (await fetch('http://127.0.0.1:9222/json')).json(); target = list.find((t) => (t.url || '').includes('appassets')); } catch {}
-  if (!target) await sleep(1000);
-}
-if (!target) { log('no page to drive'); process.exit(0); }
-log('driving', target.url);
-
-const ws = new WebSocket(target.webSocketDebuggerUrl);
-await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
-let id = 0;
+let ws = null, id = 0;
 const pending = new Map();
 const errors = [];
-ws.onmessage = (ev) => {
-  const m = JSON.parse(ev.data);
-  if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); }
-  if (m.method === 'Runtime.exceptionThrown') errors.push((m.params.exceptionDetails.exception || {}).description || m.params.exceptionDetails.text);
-  if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') errors.push('console: ' + m.params.args.map((a) => a.value).join(' '));
-};
-const send = (method, params = {}) => new Promise((resolve) => { const i = ++id; pending.set(i, resolve); ws.send(JSON.stringify({ id: i, method, params })); setTimeout(() => { if (pending.has(i)) { pending.delete(i); resolve({ timeout: true }); } }, 10000); });
+// Finds the app's page (again, if the app had to start a fresh page) and connects to it.
+async function connect() {
+  let target;
+  for (let i = 0; i < 20 && !target; i++) {
+    try {
+      const m = sh('adb shell cat /proc/net/unix').match(/@(webview_devtools_remote_\d+)/);
+      if (m) sh(`adb forward tcp:9222 localabstract:${m[1]}`);
+      const list = await (await fetch('http://127.0.0.1:9222/json')).json();
+      target = list.find((t) => (t.url || '').includes('appassets') && t.webSocketDebuggerUrl);
+    } catch {}
+    if (!target) await sleep(1000);
+  }
+  if (!target) return false;
+  if (ws) { try { ws.close(); } catch {} }
+  ws = new WebSocket(target.webSocketDebuggerUrl);
+  await new Promise((resolve, reject) => { ws.onopen = resolve; ws.onerror = reject; });
+  ws.onmessage = (ev) => {
+    const m = JSON.parse(ev.data);
+    if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); }
+    if (m.method === 'Runtime.exceptionThrown') errors.push((m.params.exceptionDetails.exception || {}).description || m.params.exceptionDetails.text);
+    if (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error') errors.push('console: ' + m.params.args.map((a) => a.value).join(' '));
+  };
+  log('driving', target.url, target.id);
+  return true;
+}
+const send = (method, params = {}) => new Promise((resolve) => { const i = ++id; pending.set(i, resolve); try { ws.send(JSON.stringify({ id: i, method, params })); } catch { pending.delete(i); return resolve({ timeout: true }); } setTimeout(() => { if (pending.has(i)) { pending.delete(i); resolve({ timeout: true }); } }, 10000); });
+if (!(await connect())) { log('no page to drive'); process.exit(0); }
 const js = async (expression, gesture = false) => { const r = await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true, userGesture: gesture }); return r.result && r.result.result ? r.result.result.value : undefined; };
 const click = async (selector, wait = 1200) => { const ok = await js(`(function(){ var e = document.querySelector(${JSON.stringify(selector)}); if (e) e.click(); return !!e; })()`, true); log('click', selector, ok ? 'ok' : 'NOT FOUND'); await sleep(wait); return ok; };
 await send('Runtime.enable');
@@ -62,6 +71,13 @@ await send('Runtime.enable');
 await js(`(function(){ localStorage.setItem('dn-office-phone-v1', JSON.stringify(Object.assign({ v:1, meta:{ lastBackup:'' } }, ${JSON.stringify(sample)}))); location.reload(); return true; })()`);
 await sleep(6000);
 await send('Runtime.enable');
+if ((await js('1+1')) !== 2) {
+  log('page did not answer after reload; app process:', (() => { try { return sh(`adb shell pidof ${'com.debugnetworks.office'}`).trim() || 'gone'; } catch { return 'gone'; } })(), '| top:', top());
+  shot('screen-1a-after-reload');
+  await sleep(4000);
+  log('reconnect:', await connect());
+  await send('Runtime.enable');
+}
 log('native bridge present:', await js('!!window.DNAndroid'), '| jsPDF bundled:', await js('!!window.jspdf'));
 log('today tiles:', await js(`(document.querySelector('.tiles') || {}).innerText`));
 shot('screen-1-today');
