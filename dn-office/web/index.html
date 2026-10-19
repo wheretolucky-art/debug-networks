@@ -105,9 +105,10 @@ a{color:var(--link)}
   padding:calc(env(safe-area-inset-top, 0px) + 18px) max(18px, env(safe-area-inset-right, 0px)) 2px max(18px, env(safe-area-inset-left, 0px))}
 .mark{flex:0 0 46px;width:46px;height:46px;border-radius:50%;background:#FFFFFF;display:grid;place-items:center;box-shadow:0 6px 18px var(--shade-2)}
 .appbar-t{display:flex;flex-direction:column;gap:1px;min-width:0;flex:1 1 auto}
-.appbar h1{font-size:28px;font-weight:800;letter-spacing:-.6px;line-height:1.12}
+.appbar h1{font-size:28px;font-weight:800;letter-spacing:-.6px;line-height:1.12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .appbar small{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .appbar .btn{flex:0 0 auto;padding-inline:14px}
+@media (max-width:360px){ .appbar h1{font-size:24px} .appbar .btn{width:44px;padding:0} .appbar .btn .lbl{display:none} }
 
 main{max-width:760px;margin-inline:auto;display:flex;flex-direction:column;gap:14px;
   padding:14px max(16px, env(safe-area-inset-right, 0px)) calc(184px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px))}
@@ -270,7 +271,7 @@ dialog.sheet .toast{bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
 <header class="appbar">
   <span class="mark" id="mark" aria-hidden="true"></span>
   <div class="appbar-t"><h1 id="title">Today</h1><small id="sub">Debug Networks</small></div>
-  <button class="btn" type="button" data-act="backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4 4 0 0 1-.5 8.5"/><path d="M12 12v8M9 15l3-3 3 3"/></svg>Back up</button>
+  <button class="btn" type="button" data-act="backup" aria-label="Back up now"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4.5 4.5 0 0 1-.6-8.96A6 6 0 0 1 18 9.5a4 4 0 0 1-.5 8.5"/><path d="M12 12v8M9 15l3-3 3 3"/></svg><span class="lbl">Back up</span></button>
 </header>
 <main id="view"><p class="empty">Opening your records…</p></main>
 <button class="fab" type="button" data-act="new" aria-label="New quote, job or client"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
@@ -834,7 +835,7 @@ dialog.sheet .toast{bottom:calc(84px + env(safe-area-inset-bottom, 0px))}
   function viewSettings(){
     var s = state.settings, b = s.biz, g = s.goal, lb = state.meta.lastBackup;
     return '<section class="panel"><h2>Backup</h2><p class="hint">Your records are saved only on this phone. Back up every week to Google Drive or WhatsApp, so a lost or broken phone doesn’t take them with it.</p>' +
-      '<dl class="kv"><dt>Records</dt><dd>' + state.clients.length + ' clients, ' + state.jobs.length + ' jobs</dd><dt>Last backup</dt><dd>' + (lb ? fmtDate(lb) : 'Never') + '</dd><dt>Storage</dt><dd>' + (NATIVE ? 'Saved inside this app. Uninstalling the app deletes it, so back up first.' : state.persisted === true ? 'Protected on this phone' : state.persisted === false ? 'The phone may clear it when space runs low, so back up often' : 'Checking…') + '</dd></dl>' +
+      '<dl class="kv"><dt>Records</dt><dd>' + state.clients.length + (state.clients.length === 1 ? ' client, ' : ' clients, ') + state.jobs.length + (state.jobs.length === 1 ? ' job' : ' jobs') + '</dd><dt>Last backup</dt><dd>' + (lb ? fmtDate(lb) : 'Never') + '</dd><dt>Storage</dt><dd>' + (NATIVE ? 'Saved inside this app. Uninstalling the app deletes it, so back up first.' : state.persisted === true ? 'Protected on this phone' : state.persisted === false ? 'The phone may clear it when space runs low, so back up often' : 'Checking…') + '</dd></dl>' +
       '<div class="row-btns"><button class="btn btn-primary" type="button" data-act="backup">' + ICON.share + 'Back up now</button><button class="btn" type="button" data-act="restore">Restore from backup</button></div></section>' +
       '<section class="panel"><h2>Look</h2><div class="chips seg" role="group" aria-label="Look">' + [['light','Light'],['dark','Dark'],['auto','Match phone']].map(function(x){ return '<button class="chip" type="button" data-act="look" data-look="' + x[0] + '" aria-pressed="' + (lookOf() === x[0]) + '">' + x[1] + '</button>'; }).join('') + '</div>' +
       '<p class="hint">Light is honey and white. Dark is easier on the eyes at night. Match phone follows your phone’s dark mode.</p></section>' +
