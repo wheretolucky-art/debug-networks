@@ -1,6 +1,6 @@
 /* DN Office service worker: keeps the app working without internet.
    The page itself is fetched fresh when online (so updates arrive), and from the cache when offline. */
-const CACHE = 'dn-office-1.0';
+const CACHE = 'dn-office-1.1';
 const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 const EXTRA = ['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'];
 

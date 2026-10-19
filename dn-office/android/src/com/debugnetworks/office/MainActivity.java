@@ -8,8 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowInsetsController;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -38,6 +42,7 @@ public class MainActivity extends Activity {
     static final String HOST = "appassets.androidplatform.net";
     static final String START = "https://" + HOST + "/www/index.html";
     static final int PICK_FILE = 41;
+    static final int HONEY_TOP = 0xFFFFE9A8, CREAM = 0xFFFFF6DC, NIGHT_TOP = 0xFF13213D, NIGHT = 0xFF0B1426;
 
     private WebView web;
     private ValueCallback<Uri[]> fileCallback;
@@ -49,7 +54,7 @@ public class MainActivity extends Activity {
             WebView.setWebContentsDebuggingEnabled(true); // test builds only, so the emulator check can drive the page
         }
         web = new WebView(this);
-        web.setBackgroundColor(0xFF0A1F44);
+        web.setBackgroundColor(CREAM);
         setContentView(web);
         WebSettings s = web.getSettings();
         s.setJavaScriptEnabled(true);
@@ -169,6 +174,33 @@ public class MainActivity extends Activity {
         }
     }
 
+    /** Status and navigation bar colours follow the look chosen in Settings: honey (light) or night (dark). */
+    void applyBars(boolean dark) {
+        Window w = getWindow();
+        w.setStatusBarColor(dark ? NIGHT_TOP : HONEY_TOP);
+        boolean lightNav = Build.VERSION.SDK_INT >= 27;
+        w.setNavigationBarColor(dark ? NIGHT : (lightNav ? CREAM : 0xFF0A1F44));
+        if (web != null) web.setBackgroundColor(dark ? NIGHT : CREAM);
+        if (Build.VERSION.SDK_INT >= 30) {
+            Bars30.setIcons(w, dark);
+        } else {
+            View decor = w.getDecorView();
+            int flags = decor.getSystemUiVisibility();
+            int light = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR | (lightNav ? View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR : 0);
+            decor.setSystemUiVisibility(dark ? (flags & ~light) : (flags | light));
+        }
+    }
+
+    /** Android 11 and newer set the bar icon colours this way. Kept apart so older phones never load it. */
+    static final class Bars30 {
+        static void setIcons(Window w, boolean dark) {
+            WindowInsetsController c = w.getInsetsController();
+            if (c == null) return;
+            int mask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+            c.setSystemBarsAppearance(dark ? 0 : mask, mask);
+        }
+    }
+
     void copyText(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard != null) clipboard.setPrimaryClip(ClipData.newPlainText("DN Office", text));
@@ -206,6 +238,13 @@ public class MainActivity extends Activity {
         public void copyText(final String text) {
             runOnUiThread(new Runnable() {
                 public void run() { MainActivity.this.copyText(text); }
+            });
+        }
+
+        @JavascriptInterface
+        public void setBars(final boolean dark) {
+            runOnUiThread(new Runnable() {
+                public void run() { MainActivity.this.applyBars(dark); }
             });
         }
 

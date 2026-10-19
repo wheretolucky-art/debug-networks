@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Honey light look: honey status bar with dark icons, cream background while the app opens.
+         The page switches the bars to dark when Dark is chosen in Settings (MainActivity.applyBars). -->
     <style name="AppTheme" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:colorPrimary">@color/navy</item>
-        <item name="android:colorPrimaryDark">@color/navy</item>
+        <item name="android:colorPrimaryDark">@color/honey_top</item>
         <item name="android:colorAccent">#FFF5B400</item>
-        <item name="android:statusBarColor">@color/navy</item>
+        <item name="android:statusBarColor">@color/honey_top</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:navigationBarColor">@color/navy</item>
-        <item name="android:windowBackground">@color/navy</item>
+        <item name="android:windowBackground">@color/cream</item>
     </style>
 </resources>

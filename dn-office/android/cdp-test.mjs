@@ -91,6 +91,14 @@ await back();
 
 await back();
 log('after back: title', await js(`document.getElementById('title').textContent`), '| sheet open', await js(`document.getElementById('sheet').open`));
+log('look switch in the app:', await js('!!(window.DNAndroid && window.DNAndroid.setBars)'));
+await click('.navbtn[data-view="settings"]', 1000);
+await click('[data-act="look"][data-look="dark"]', 1500);
+log('look after Dark:', await js(`document.documentElement.getAttribute('data-theme')`));
+shot('screen-8-dark');
+await click('[data-act="look"][data-look="light"]', 1500);
+log('look after Light:', await js(`document.documentElement.getAttribute('data-theme')`));
+await click('.navbtn[data-view="jobs"]', 800);
 await back();
 log('after back again: title', await js(`document.getElementById('title').textContent`));
 shot('screen-7-today-again');
