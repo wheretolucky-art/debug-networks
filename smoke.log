@@ -1,0 +1,66 @@
+== wait for the emulator to finish starting
+== install
+Serving...
+All files should be loaded. Notifying the device.
+Performing Incremental Install
+Success
+Install command complete in 217 ms
+== start, attempt 1
+Starting: Intent { cmp=com.debugnetworks.office/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.debugnetworks.office/.MainActivity
+TotalTime: 1214
+WaitTime: 1227
+Complete
+app is up
+driving https://appassets.androidplatform.net/www/index.html 44A0480AC72C74E7FFE8E88893007101
+native bridge present: true | jsPDF bundled: true
+today tiles: Money to collect
+₹13,900
+from Sample Shop · ₹5,000 already paid
+1 due
+Send reminder
+Add payment
+Work to do
+0
+confirmed or started
+Quotes
+0
+₹0
+Follow-ups
+0
+today or overdue
+screenshot screen-1-today
+click .fab ok
+sheet open after +: true
+screenshot screen-2-new-menu
+sheet open after back: false | title: Today | top: ResumedActivity=ActivityRecord{22a8af8 u0 com.debugnetworks.office/.MainActivity t8}
+screenshot screen-3-after-back
+click .navbtn[data-view="jobs"] ok
+click .chip[data-jobs-tab="all"] ok
+click [data-act="job"][data-id="j_sample"] ok
+screenshot screen-4-job
+click #sheet [data-act="card"] ok
+after sharing the CCTV card, top: ResumedActivity=ActivityRecord{c84573a u0 com.android.intentresolver/.ChooserActivity t8}
+screenshot screen-5-share-card
+back in app after share sheet: ResumedActivity=ActivityRecord{22a8af8 u0 com.debugnetworks.office/.MainActivity t8}
+click #sheet [data-act="edit-quote"] ok
+click [data-act="q-pdf"] ok
+after sharing the quote PDF, top: ResumedActivity=ActivityRecord{b7a3a11 u0 com.android.intentresolver/.ChooserActivity t8}
+screenshot screen-6-share-pdf
+after back: title Jobs | sheet open false
+look switch in the app: true
+click .navbtn[data-view="settings"] ok
+click [data-act="look"][data-look="dark"] ok
+look after Dark: dark
+screenshot screen-8-dark
+click [data-act="look"][data-look="light"] ok
+look after Light: light
+click .navbtn[data-view="jobs"] ok
+after back again: title Today
+screenshot screen-7-today-again
+back on Today leaves the app, top: ResumedActivity=ActivityRecord{b7ac007 u0 com.google.android.apps.nexuslauncher/.NexusLauncherActivity t7}
+page errors: []
+5417
+app still running

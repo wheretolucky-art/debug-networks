@@ -1,0 +1,8 @@
+ACTIVITY MANAGER PROCESS EXIT INFO (dumpsys activity exit-info)
+Last Timestamp of Persistence Into Persistent Storage: 1970-01-01 00:00:00.000
+  package: com.debugnetworks.office
+    Historical Process Exit for uid=10192
+        ApplicationExitInfo #0:
+          timestamp=2026-10-19 07:46:45.438 pid=5454 realUid=99000 packageUid=10192 definingUid=10134 user=0
+          process=com.google.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 reason=13 (OTHER KILLS BY SYSTEM) subreason=17 (ISOLATED NOT NEEDED) status=0
+          importance=300 pss=79MB rss=202MB description=isolated not needed state=empty trace=null
