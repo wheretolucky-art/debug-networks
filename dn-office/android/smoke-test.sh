@@ -30,5 +30,8 @@ done
 adb exec-out screencap -p > "$OUT/screen-0-start.png"
 timeout 240 node "$HERE/cdp-test.mjs" "$OUT" >> "$LOG" 2>&1 || echo "cdp-test exited with $?" >> "$LOG"
 adb shell pidof "$PKG" >> "$LOG" 2>&1 && echo "app still running" >> "$LOG"
-adb logcat -d -s chromium:V AndroidRuntime:E ActivityManager:W > "$OUT/logcat.txt" 2>&1 || true
+adb logcat -d -v time '*:W' DNOffice:V > "$OUT/logcat.txt" 2>&1 || true
+# Why the app's process ended, if it did (Android 11+ keeps the last reasons).
+adb shell dumpsys activity exit-info "$PKG" > "$OUT/exit-info.txt" 2>&1 || true
+adb shell dumpsys meminfo > "$OUT/meminfo.txt" 2>&1 || true
 exit 0
