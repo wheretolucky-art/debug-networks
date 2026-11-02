@@ -1,0 +1,60 @@
+== wait for the emulator to finish starting
+== install
+Serving...
+All files should be loaded. Notifying the device.
+Performing Incremental Install
+Success
+Install command complete in 215 ms
+== start, attempt 1
+Starting: Intent { cmp=com.debugnetworks.gym/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.debugnetworks.gym/.MainActivity
+TotalTime: 1149
+WaitTime: 1188
+Complete
+app is up
+driving https://appassets.androidplatform.net/www/index.html
+fill #qW ok
+fill #qS ok
+click input[name=qG][value=no] ok
+click [data-act=quickCheckin] ok
+native bridge present: true | version: 1.0.3
+hero: Legs B · Hamstrings and glutes
+screenshot screen-1-today
+click .hero [data-act=start] ok
+title after start: Workout | exercises: 6
+fill #ex-0 [data-f=kg] ok
+fill #ex-0 [data-f=reps] ok
+click #ex-0 [data-act=tick][data-set="0"] ok
+rest bar showing: true | set done: true
+screenshot screen-2-workout-rest
+click [data-act=restAdj][data-d="-15"] ok
+rest time after -15s: 1:29
+native rest alert call: ok
+app alive after native rest alert: 2
+click [data-act=restSkip] ok
+click [data-act=finish] ok
+summary sheet open: true | title: Workout saved
+screenshot screen-3-finished
+sheet open after back: false | workouts saved: 6
+click #nav [data-tab=diet] ok
+click [data-act=meal][data-i="0"] ok
+screenshot screen-4-diet
+click #nav [data-tab=body] ok
+screenshot screen-5-body
+click #nav [data-tab=progress] ok
+screenshot screen-6-progress
+click header [data-act=report] ok
+report starts: WEEKLY REPORT — Mon 2 Nov to Sun 8 Nov 2026
+(week in progres
+screenshot screen-7-report
+click [data-act=shareReport] ok
+after share, top activity: ResumedActivity=ActivityRecord{fb61e u0 com.android.intentresolver/.ChooserActivity t8}
+screenshot screen-8-share-sheet
+sheet open after back: false | title: Progress
+title after back from progress: Today | top: ResumedActivity=ActivityRecord{ea789d9 u0 com.debugnetworks.gym/.MainActivity t8}
+screenshot screen-9-back-home
+page errors: none
+5139
+app still running

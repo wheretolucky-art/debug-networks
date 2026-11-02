@@ -1,0 +1,93 @@
+build-tools: /usr/local/lib/android/sdk/build-tools/37.0.0
+platform:    /usr/local/lib/android/sdk/platforms/android-37.2
+version:     1.0.3 (3)
+openjdk version "17.0.21" 2026-10-20
+OpenJDK Runtime Environment Temurin-17.0.21+9 (build 17.0.21+9)
+OpenJDK 64-Bit Server VM Temurin-17.0.21+9 (build 17.0.21+9, mixed mode, sharing)
+== 1. Web app into assets
+total 124
+drwxr-xr-x 2 runner runner  4096 Nov  2 16:09 .
+drwxr-xr-x 3 runner runner  4096 Nov  2 16:09 ..
+-rw-r--r-- 1 runner runner  3303 Nov  2 16:09 icon-192.png
+-rw-r--r-- 1 runner runner 13005 Nov  2 16:09 icon-512.png
+-rw-r--r-- 1 runner runner 90201 Nov  2 16:09 index.html
+-rw-r--r-- 1 runner runner   539 Nov  2 16:09 manifest.webmanifest
+== 2. Resources and manifest
+== 3. Code
+src/com/debugnetworks/gym/MainActivity.java:78: warning: [deprecation] setDatabaseEnabled(boolean) in WebSettings has been deprecated
+        s.setDatabaseEnabled(true);
+         ^
+src/com/debugnetworks/gym/MainActivity.java:89: warning: [deprecation] onBackPressed() in Activity has been deprecated
+    public void onBackPressed() {
+                ^
+src/com/debugnetworks/gym/MainActivity.java:91: warning: [deprecation] onBackPressed() in Activity has been deprecated
+            super.onBackPressed();
+                 ^
+src/com/debugnetworks/gym/MainActivity.java:104: warning: [deprecation] onBackPressed() in Activity has been deprecated
+        super.onBackPressed();
+             ^
+src/com/debugnetworks/gym/MainActivity.java:175: warning: [deprecation] VIBRATOR_SERVICE in Context has been deprecated
+        Vibrator v = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+                                                 ^
+src/com/debugnetworks/gym/MainActivity.java:179: warning: [deprecation] vibrate(long[],int) in Vibrator has been deprecated
+            else v.vibrate(pattern, -1);
+                  ^
+src/com/debugnetworks/gym/MainActivity.java:211: warning: [deprecation] Builder(Context) in Builder has been deprecated
+            b = new Notification.Builder(this);
+                ^
+src/com/debugnetworks/gym/MainActivity.java:212: warning: [deprecation] PRIORITY_HIGH in Notification has been deprecated
+            b.setPriority(Notification.PRIORITY_HIGH);
+                                      ^
+src/com/debugnetworks/gym/MainActivity.java:212: warning: [deprecation] setPriority(int) in Builder has been deprecated
+            b.setPriority(Notification.PRIORITY_HIGH);
+             ^
+src/com/debugnetworks/gym/MainActivity.java:348: warning: [deprecation] shouldOverrideUrlLoading(WebView,String) in WebViewClient has been deprecated
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                       ^
+10 warnings
+== 4. Package and align
+== 5. Debuggable, test-signed copy for the emulator check, and the signing tool
+Generating 2,048 bit RSA key pair and self-signed certificate (SHA256withRSA) with a validity of 365 days
+	for: CN=PPL Coach test
+Verifies
+Verified using v1 scheme (JAR signing): true
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): true
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v3.2 scheme (APK Signature Scheme v3.2): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+package: name='com.debugnetworks.gym' versionCode='3' versionName='1.0.3' platformBuildVersionName='17' platformBuildVersionCode='37' compileSdkVersion='37' compileSdkVersionCodename='17'
+minSdkVersion:'23'
+targetSdkVersion:'34'
+uses-permission: name='android.permission.INTERNET'
+uses-permission: name='android.permission.VIBRATE'
+uses-permission: name='android.permission.POST_NOTIFICATIONS'
+application-label:'PPL Coach'
+application-icon-160:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-240:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-320:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-480:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-640:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application-icon-65534:'res/mipmap-anydpi-v26/ic_launcher.xml'
+application: label='PPL Coach' icon='res/mipmap-anydpi-v26/ic_launcher.xml'
+application-debuggable
+launchable-activity: name='com.debugnetworks.gym.MainActivity'  label='' icon=''
+feature-group: label=''
+  uses-feature: name='android.hardware.faketouch'
+  uses-implied-feature: name='android.hardware.faketouch' reason='default feature for all apps'
+main
+supports-screens: 'small' 'normal' 'large' 'xlarge'
+supports-any-density: 'true'
+locales: '--_--'
+densities: '160' '240' '320' '480' '640' '65534'
+total 1332
+drwxr-xr-x 2 runner runner    4096 Nov  2 16:09 .
+drwxr-xr-x 6 runner runner    4096 Nov  2 16:09 ..
+-rwxr-xr-x 1 runner runner 1181416 Nov  2 16:09 apksigner.jar
+-rw-r--r-- 1 runner runner    4645 Nov  2 16:09 build.log
+-rw-r--r-- 1 runner runner   79451 Nov  2 16:09 gym-app-test.apk
+-rw-r--r-- 1 runner runner    5492 Nov  2 16:09 gym-app-test.apk.idsig
+-rw-r--r-- 1 runner runner   72054 Nov  2 16:09 gym-app-unsigned.apk
+BUILD OK
