@@ -85,11 +85,16 @@ shot('screen-1-today');
 
 await click('.hero [data-act=start]', 1500);
 log('title after start:', await js(`document.getElementById('title').textContent`), '| exercises:', await js(`document.querySelectorAll('.ex').length`));
-await fill('#ex-0 [data-f=reps]', '7');
+await fill('#ex-0 [data-f=kg]', '20');
+await fill('#ex-0 [data-f=reps]', '10');
 await click('#ex-0 [data-act=tick][data-set="0"]', 1200);
 log('rest bar showing:', await js(`!document.getElementById('restbar').hidden`), '| set done:', await js(`!!document.querySelector('#ex-0 .setrow.done')`));
 shot('screen-2-workout-rest');
 await click('[data-act=restAdj][data-d="-15"]', 400);
+log('rest time after -15s:', await js(`document.getElementById('restTime').textContent`));
+log('native rest alert call:', await js(`(function(){ try { window.GymAndroid.startRest(1500, 'Test set'); window.GymAndroid.keepAwake(true); return 'ok'; } catch (e) { return 'error: ' + e.message; } })()`));
+await sleep(3000);
+log('app alive after native rest alert:', await js('1 + 1'));
 await click('[data-act=restSkip]', 600);
 await click('[data-act=finish]', 1500);
 log('summary sheet open:', await js(`document.getElementById('sheet').open`), '| title:', await js(`document.getElementById('sheetTitle').textContent`));
