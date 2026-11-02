@@ -59,7 +59,7 @@ nav.bottom svg{width:24px;height:24px}
 .chip.done{opacity:.55}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
 .rot{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
-.rot div{border-radius:8px;padding:6px 0;text-align:center;font-size:11.5px;font-weight:700;background:var(--s2);color:var(--muted);border:1px solid transparent}
+.rot div{border-radius:8px;padding:6px 0;text-align:center;font-size:11.5px;line-height:1.25;font-weight:700;background:var(--s2);color:var(--muted);border:1px solid transparent}
 .rot div.next{color:#fff;border-color:#fff}
 .rot div.did{opacity:.45}
 label.f{display:block;font-size:13px;color:var(--muted);margin-bottom:4px}
@@ -534,9 +534,9 @@ function viewToday() {
   var cycleDone = {};
   if (lw) { var rot = P().rotation, li = rot.indexOf(lw.sessionId); for (var k = 0; k <= li; k++) cycleDone[rot[k]] = true; if (nid === trainIds()[0]) cycleDone = {}; }
   h += '<div class="card"><div class="row between"><h2 style="margin:0">Rotation</h2><span class="tiny muted">' + esc(P().name) + '</span></div><div class="rot">' + P().rotation.map(function (id) {
-    var s = sess(id), lab = id === 'rest' ? 'Rest' : (s ? s.name : id), col = id === 'rest' ? 'var(--rest)' : KIND_COLOR[s && s.kind] || 'var(--rest)';
+    var s = sess(id), lab = id === 'rest' ? 'Rest day' : (s ? s.name : id), col = id === 'rest' ? 'var(--rest)' : KIND_COLOR[s && s.kind] || 'var(--rest)';
     var cls = (id === nid && !S.active ? 'next' : '') + (cycleDone[id] ? ' did' : '');
-    return '<div class="' + cls + '" style="' + (id === nid && !S.active ? 'background:' + col + ';' : 'color:' + col + ';') + '">' + esc(lab) + '</div>';
+    return '<div class="' + cls + '" style="' + (id === nid && !S.active ? 'background:' + col + ';' : 'color:' + col + ';') + '">' + esc(lab).replace(/ (?=\S+$)/, '<br>') + '</div>';
   }).join('') + '</div></div>';
 
   if (parseD(t).getDay() === 0) h += '<div class="card banner"><h2>Sunday check-in</h2><p class="small" style="margin:0 0 10px">Send your weekly report so next week\'s split can be planned from your numbers.</p><button class="btn" style="background:#fff;color:#111;border:0" data-act="report">Open weekly report</button></div>';
